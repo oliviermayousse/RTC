@@ -1,0 +1,3 @@
+stdlib.h:104:6:malloc	8	static
+stdlib.h:90:6:calloc	8	static
+stdlib.h:93:7:free	8	static

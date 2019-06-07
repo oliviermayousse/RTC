@@ -1,0 +1,8 @@
+freertos.c:176:6:StartDefaultTask	8	static
+freertos.c:195:6:TaskMode	8	static
+freertos.c:220:6:TaskChamps	8	static
+freertos.c:248:6:TaskSensReglage	8	static
+freertos.c:275:6:TaskValeurSuivante	16	static
+freertos.c:347:6:TaskRTCaffichage	24	static
+freertos.c:103:6:vApplicationGetIdleTaskMemory	0	static
+freertos.c:117:6:MX_FREERTOS_Init	184	static

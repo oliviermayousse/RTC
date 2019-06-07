@@ -1,0 +1,6 @@
+horodateur.c:35:9:receive_info_rtc	32	static
+horodateur.c:55:5:modifier_valeur_heure_courante	8	static
+horodateur.c:146:6:mise_a_jour_rtc	24	static
+horodateur.c:160:5:Change_Mode	8	static
+horodateur.c:175:5:Choix_Champ	8	static
+horodateur.c:196:5:Choix_Sens	8	static
