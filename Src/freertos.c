@@ -11,7 +11,7 @@
  *
  * This software component is licensed by ST under Ultimate Liberty license
  * SLA0044, the "License"; You may not use this file except in compliance with
- * the License. You may obtain a copy of the License at:
+ * the License. You may obtain  a copy of the License at:
  *                             www.st.com/SLA0044
  *
  ******************************************************************************
@@ -60,7 +60,7 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 uint8_t transmission_I2C1[4];
-uint8_t reception_I2C1[3];
+uint8_t reception_I2C1[7];
 uint8_t * p_transmission_I2C1 = transmission_I2C1;
 uint8_t * p_reception_I2C1 = reception_I2C1;
 extern int mode;
@@ -371,7 +371,7 @@ void TaskRTCaffichage(void const * argument)
 		if (mode == HORLOGE)
 		{
 			HAL_I2C_Master_Transmit(&hi2c1, (uint8_t)SLAVE_ADRESS, p_transmission_I2C1, (uint16_t)1, HAL_MAX_DELAY);
-			HAL_I2C_Master_Receive(&hi2c1, (uint8_t)SLAVE_ADRESS, (uint8_t *)p_reception_I2C1, (uint16_t)3, HAL_MAX_DELAY);
+			HAL_I2C_Master_Receive(&hi2c1, (uint8_t)SLAVE_ADRESS, (uint8_t *)p_reception_I2C1, (uint16_t)7, HAL_MAX_DELAY);
 
 
 			//calcul des secondes
@@ -389,7 +389,22 @@ void TaskRTCaffichage(void const * argument)
 			int dizaine_heure =(*(p_reception_I2C1+2) & (MASQUE_DIZAINES)) >> 4;
 			int heure = dizaine_heure * 10 + unites_heure;
 
-			printf("%d h : %d min : %d sec \n", heure, minutes ,secondes);
+			//calcul des jours
+			int unites_jours = (*(p_reception_I2C1+4) & (MASQUE_UNITEES));
+			int dizaines_jours = (*(p_reception_I2C1+4) & (MASQUE_DIZAINES_JOUR)) >> 4;
+			int jours = (dizaines_jours * 10) + unites_jours;
+
+			//calcul des mois
+			int unites_mois = (*(p_reception_I2C1+5))& (MASQUE_UNITEES);
+			int dizaine_mois =(*(p_reception_I2C1+5) & (MASQUE_DIZAINES_MOIS)) >> 4;
+			int mois = dizaine_mois * 10 + unites_mois;
+
+			//calcul des années
+			int unites_annees = (*(p_reception_I2C1+6))& (MASQUE_UNITEES);
+			int dizaine_annees =(*(p_reception_I2C1+6) & (MASQUE_DIZAINES_ANNEE)) >> 4;
+			int annees = dizaine_annees * 10 + unites_annees;
+
+			printf("%d/%d/%d - %d h : %d min : %d sec \n",jours, mois, annees, heure, minutes ,secondes);
 		}
 
 		osDelay(1000);
