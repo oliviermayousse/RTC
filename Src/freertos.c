@@ -68,7 +68,7 @@ extern int sens;
 extern int champ;
 uint8_t valeur = 0;
 int unite;
-					int dizaine;
+int dizaine;
 
 
 /* USER CODE END Variables */
@@ -288,38 +288,50 @@ void TaskValeurSuivante(void const * argument)
 				if (champ == SECONDES)
 				{
 					//calcul des secondes
-					unite = new_valeur%10;
-					printf("unité nouvelle valeur %d\n", unite);
+					unite= new_valeur%10;
 					dizaine = (new_valeur-unite)/10;
-					printf("dizaine nouvelle valeur %d\n", dizaine);
-
-
+					printf("nouvelle valeur des secondes %d%d\n",dizaine, unite);
 					new_valeur =  (dizaine<<4) + unite ;
 					mise_a_jour_rtc( new_valeur, champ);
 				}
 				else if (champ == MINUTES)
 				{
 					//séparation de la nouvelle valeur en unité et dizaine
-
-
-
 					unite = new_valeur%10;
-					printf("unité nouvelle valeur %d\n", unite);
 					dizaine = (new_valeur-unite)/10;
-					printf("dizaine nouvelle valeur %d\n", dizaine);
-
-
+					printf("nouvelle valeur des minutes %d%d\n",dizaine, unite);
 					new_valeur =  (dizaine<<4) + unite ;
 					mise_a_jour_rtc( new_valeur, champ);
 				}
 				else if (champ == HEURES)
 				{
 					unite = new_valeur%10;
-					printf("unité nouvelle valeur %d\n", unite);
 					dizaine = (new_valeur-unite)/10;
-					printf("dizaine nouvelle valeur %d\n", dizaine);
-
-
+					printf("nouvelle valeur des heures %d%d\n",dizaine, unite);
+					new_valeur =  (dizaine<<4) + unite ;
+					mise_a_jour_rtc( new_valeur, champ);
+				}
+				else if (champ == JOURS)
+				{
+					unite = new_valeur%10;
+					dizaine = (new_valeur-unite)/10;
+					printf("nouvelle valeur des jours %d%d\n",dizaine, unite);
+					new_valeur =  (dizaine<<4) + unite ;
+					mise_a_jour_rtc( new_valeur, champ);
+				}
+				else if (champ == MOIS)
+				{
+					unite = new_valeur%10;
+					dizaine = (new_valeur-unite)/10;
+					printf("nouvelle valeur des annees %d%d\n",dizaine, unite);
+					new_valeur =  (dizaine<<4) + unite ;
+					mise_a_jour_rtc( new_valeur, champ);
+				}
+				else if (champ == ANNEES)
+				{
+					unite = new_valeur%10;
+					dizaine = (new_valeur-unite)/10;
+					printf("nouvelle valeur %d%d\n",dizaine, unite);
 					new_valeur =  (dizaine<<4) + unite ;
 					mise_a_jour_rtc( new_valeur, champ);
 				}
@@ -327,8 +339,6 @@ void TaskValeurSuivante(void const * argument)
 
 
 				valeur = receive_info_rtc(champ);
-
-
 			}
 		}
 

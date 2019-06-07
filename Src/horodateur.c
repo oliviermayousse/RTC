@@ -23,6 +23,15 @@ int heures;
 int unites_secondes;
 int dizaine_secondes;
 int secondes;
+int unites_jours;
+int dizaine_jours;
+int jours;
+int unites_mois;
+int dizaine_mois;
+int mois;
+int unites_annees;
+int dizaine_annees;
+int annees;
 int retour;
 
 
@@ -47,7 +56,6 @@ uint8_t receive_info_rtc(int choix_info_a_modifier){
 
 /*
  * @brief incrémente ou décrémente en fonction de l'appuie sur le Btn_User
- * @param si le bouton est appuyé
  * @param si on incrémente ou on décrémente
  * @param la valeur reçu
  * @param le type de valeur à modifier
@@ -92,6 +100,42 @@ int modifier_valeur_heure_courante(int sens, int RxBuffer, int champ){
 					}
 					retour = heures;
 					break;
+
+				case JOURS:
+					unites_jours = (RxBuffer & MASQUE_UNITEES);
+					dizaine_jours = (RxBuffer & MASQUE_DIZAINES) >> 4;
+					jours = dizaine_secondes * 10 + unites_jours;
+					printf("%d\n", jours);
+					jours++;
+					if(jours == 32){
+						jours = 0;
+					}
+					retour = jours;
+					break;
+
+				case MOIS:
+					unites_mois = (RxBuffer & MASQUE_UNITEES);
+					dizaine_mois = (RxBuffer & MASQUE_DIZAINES) >> 4;
+					mois = dizaine_mois * 10 + unites_mois;
+					printf("%d\n", mois);
+					mois++;
+					if(mois == 13){
+						mois = 0;
+					}
+					retour = mois;
+					break;
+
+				case ANNEES:
+					unites_annees = (RxBuffer & MASQUE_UNITEES);
+					dizaine_annees = (RxBuffer & MASQUE_DIZAINES) >> 4;
+					annees = dizaine_annees * 10 + unites_annees;
+					printf("%d\n", annees);
+					annees++;
+					if(annees == 100){
+						annees = 00;
+					}
+					retour = annees;
+					break;
 			}
 			break;
 		case DOWN:
@@ -131,6 +175,41 @@ int modifier_valeur_heure_courante(int sens, int RxBuffer, int champ){
 				}
 				retour = heures;
 				break;
+			case JOURS:
+				unites_jours = (RxBuffer & MASQUE_UNITEES);
+				dizaine_jours = (RxBuffer & MASQUE_DIZAINES) >> 4;
+				jours = dizaine_secondes * 10 + unites_jours;
+				printf("%d\n", jours);
+				jours--;
+				if(jours == 0){
+					jours = 32;
+				}
+				retour = jours;
+				break;
+
+			case MOIS:
+				unites_mois = (RxBuffer & MASQUE_UNITEES);
+				dizaine_mois = (RxBuffer & MASQUE_DIZAINES) >> 4;
+				mois = dizaine_mois * 10 + unites_mois;
+				printf("%d\n", mois);
+				mois--;
+				if(mois == 0){
+					mois = 13;
+				}
+				retour = mois;
+				break;
+
+			case ANNEES:
+				unites_annees = (RxBuffer & MASQUE_UNITEES);
+				dizaine_annees = (RxBuffer & MASQUE_DIZAINES) >> 4;
+				annees = dizaine_annees * 10 + unites_annees;
+				printf("%d\n", annees);
+				annees--;
+				if(annees == 00){
+					annees = 100;
+				}
+				retour = annees;
+				break;
 			}
 			break;
 	}
@@ -159,7 +238,14 @@ void mise_a_jour_rtc(int RxBuffer, int choix_info_a_modifier){
  */
 int Change_Mode(void){
 	if(mode == HORLOGE){
-		printf("Mode Reglages\n");
+		printf("         Mode Reglages\n");
+		printf("---------------------------------\n");
+		printf("| O       O        O      O     |\n");
+		printf("| up/   param            mode   |\n");
+		printf("|down     a             reglage/|\n");
+		printf("|      modifier         horloge |\n");
+		printf("---------------------------------\n");
+
 		mode = REGLAGES;
 	}
 	else if(mode == REGLAGES){
@@ -174,7 +260,7 @@ int Change_Mode(void){
  */
 int Choix_Champ(void){
 	switch (champ){
-	case HEURES:
+	case ANNEES:
 		champ = SECONDES;
 		printf("Secondes\n");
 		break;
@@ -185,6 +271,18 @@ int Choix_Champ(void){
 	case MINUTES:
 		champ = HEURES;
 		printf("Heures\n");
+		break;
+	case HEURES:
+		champ = JOURS;
+		printf("Jours\n");
+		break;
+	case JOURS:
+		champ = MOIS;
+		printf("Mois\n");
+		break;
+	case MOIS:
+		champ = ANNEES;
+		printf("Annees\n");
 		break;
 	}
 	return champ;

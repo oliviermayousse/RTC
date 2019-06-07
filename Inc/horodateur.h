@@ -15,6 +15,9 @@
 #define SECONDES 0
 #define MINUTES 1
 #define HEURES 2
+#define JOURS 4
+#define MOIS 5
+#define ANNEES 6
 #define UP 0
 #define DOWN 1
 #define MAX_DELAY 1000
